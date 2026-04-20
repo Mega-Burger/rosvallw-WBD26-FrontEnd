@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../hotel-frontend/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h3>Welcome to the hotel! (guest)</h3>
+        Rooms: <select id="room-list"></select><br>
+        Arrival: <input type="date" id="datefrom"><br>
+        Departure: <input type="date" id="dateto"><br>
+        <textarea id="info" placeholder="Additional info"></textarea><br>
+        <button type="button" id="btn-save">Save booking</button>
+
+        <h3>Bookings:</h3>
+        <ul id="bookings-list"></ul>
+    </div>
+    <script src="scripts.js"></script>
+
+</body>
+
+</html>
