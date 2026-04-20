@@ -50,7 +50,7 @@ async function saveBooking() {
         guest_id: document.getElementById("guest-list").value,
         datefrom: document.getElementById("datefrom").value,
         dateto: document.getElementById("dateto").value,
-        info: document.getElementById("info").value
+        addinfo: document.getElementById("info").value
     };
 
     const res = await fetch(`${apiUrl}/bookings`, {
