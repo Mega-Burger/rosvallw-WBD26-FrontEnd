@@ -2,8 +2,7 @@ console.log("hotels");
 
 const apiUrl = "http://127.0.0.1:8080";
 
-const API_KEY = getCurrentGuest(); // This should be stored securely in a real application and not hardcoded in the frontend
-
+const API_KEY = "a93a7f3a4b1d5f618136ea25fcaf57c81c19cb33d3d6114de733bc7eca59eaca";
 async function getRooms() {
     const res = await fetch(`${apiUrl}/rooms`);
     const rooms = await res.json();
@@ -33,14 +32,14 @@ async function getBookings() {
     for (const booking of bookings) {
         document.getElementById("bookings-list").innerHTML += `
             <li>Room ${booking.room_number} - From: ${booking.datefrom} To: ${booking.dateto} - Nights: ${booking.nights} - Guest: ${booking.guest} - Price: ${booking.price} € - Info: ${booking.addinfo}
-                <select onchange="rateBooking(${booking.id}, this.value)">
-                    <option value="">Rate</option>
-                    <option value="1">⭐</option>
-                    <option value="2">⭐⭐</option>
-                    <option value="3">⭐⭐⭐</option>
-                    <option value="4">⭐⭐⭐⭐</option>
-                    <option value="5">⭐⭐⭐⭐⭐</option>
-                </select>
+            <select onchange="rateBooking(${booking.id}, this.value)">
+                <option value="">Rate</option>
+                <option value="1" ${booking.stars == 1 ? 'selected' : ''}>⭐</option>
+                <option value="2" ${booking.stars == 2 ? 'selected' : ''}>⭐⭐</option>
+                <option value="3" ${booking.stars == 3 ? 'selected' : ''}>⭐⭐⭐</option>
+                <option value="4" ${booking.stars == 4 ? 'selected' : ''}>⭐⭐⭐⭐</option>
+                <option value="5" ${booking.stars == 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐</option>
+            </select>
             </li>
         `;
     }
