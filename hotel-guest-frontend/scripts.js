@@ -2,7 +2,7 @@ console.log("hotels");
 
 const apiUrl = "http://127.0.0.1:8080";
 
-const API_KEY = "1234567890"; // This should be stored securely in a real application and not hardcoded in the frontend
+const API_KEY = getCurrentGuest(); // This should be stored securely in a real application and not hardcoded in the frontend
 
 /*async function getRooms() {
     const res = await fetch(`${apiUrl}/rooms`);
@@ -23,6 +23,7 @@ async function getCurrentGuest() {
     const guest = await res.json();
     console.log("guest", guest);
 }
+getCurrentGuest();
 
 async function getBookings() {
     const res = await fetch(`${apiUrl}/bookings`);
@@ -40,7 +41,7 @@ getBookings();
 async function saveBooking() {
     const booking = {
         room_id: document.getElementById("room-list").value,
-        guest_id: 1,
+        guest_id: document.getElementById("guest-list").value,
         datefrom: document.getElementById("datefrom").value,
         dateto: document.getElementById("dateto").value,
         info: document.getElementById("info").value
