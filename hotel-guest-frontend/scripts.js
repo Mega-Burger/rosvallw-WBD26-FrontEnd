@@ -4,7 +4,7 @@ const apiUrl = "http://127.0.0.1:8080";
 
 const API_KEY = getCurrentGuest(); // This should be stored securely in a real application and not hardcoded in the frontend
 
-/*async function getRooms() {
+async function getRooms() {
     const res = await fetch(`${apiUrl}/rooms`);
     const rooms = await res.json();
     console.log("rooms", rooms);
@@ -14,11 +14,11 @@ const API_KEY = getCurrentGuest(); // This should be stored securely in a real a
         `;
     }
 }
-getRooms();*/
+getRooms();
 
 async function getCurrentGuest() {
     const res = await fetch(`${apiUrl}/guests/current`, {
-        headers: {'x-api-key': API_KEY}
+        headers: { 'x-api-key': API_KEY }
     });
     const guest = await res.json();
     console.log("guest", guest);
@@ -32,11 +32,30 @@ async function getBookings() {
     document.getElementById("bookings-list").innerHTML = "";
     for (const booking of bookings) {
         document.getElementById("bookings-list").innerHTML += `
-            <li>Room ${booking.room_number} — From: ${booking.datefrom} To: ${booking.dateto}</li>
+            <li>Room ${booking.room_number} - From: ${booking.datefrom} To: ${booking.dateto} - Nights: ${booking.nights} - Guest: ${booking.guest} - Price: ${booking.price} € - Info: ${booking.addinfo}
+                <select onchange="rateBooking(${booking.id}, this.value)">
+                    <option value="">Rate</option>
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+            </li>
         `;
     }
 }
 getBookings();
+async function rateBooking(id, stars) {
+    const res = await fetch(`${apiUrl}/bookings/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stars: parseInt(stars) })
+    });
+    const resData = await res.json();
+    console.log(resData);
+    getBookings();
+}
 
 async function saveBooking() {
     const booking = {
