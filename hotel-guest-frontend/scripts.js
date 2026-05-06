@@ -1,73 +1,41 @@
-console.log("hotels");
+﻿console.log("hotels");
 
 const apiUrl = "http://127.0.0.1:8080";
 
-const API_KEY = "a93a7f3a4b1d5f618136ea25fcaf57c81c19cb33d3d6114de733bc7eca59eaca";
 async function getRooms() {
     const res = await fetch(`${apiUrl}/rooms`);
     const rooms = await res.json();
-    console.log("rooms", rooms);
     for (const room of rooms) {
         document.getElementById("room-list").innerHTML += `
-            <option value="${room.id}">${room.room_number} - ${room.type} - ${room.price} €</option>
+            <option value="${room.id}">${room.room_number} - ${room.room_type} - ${room.price} €</option>
         `;
     }
 }
 getRooms();
 
-async function getCurrentGuest() {
-    const res = await fetch(`${apiUrl}/guests/current`, {
-        headers: { 'x-api-key': API_KEY }
-    });
-    const guest = await res.json();
-    console.log("guest", guest);
-}
-getCurrentGuest();
-
 async function getBookings() {
     const res = await fetch(`${apiUrl}/bookings`);
     const bookings = await res.json();
-    console.log(bookings);
     document.getElementById("bookings-list").innerHTML = "";
     for (const booking of bookings) {
         document.getElementById("bookings-list").innerHTML += `
-            <li>Room ${booking.room_number} - From: ${booking.datefrom} To: ${booking.dateto} - Nights: ${booking.nights} - Guest: ${booking.guest} - Price: ${booking.price} € - Info: ${booking.addinfo}
-            <select onchange="rateBooking(${booking.id}, this.value)">
-                <option value="">Rate</option>
-                <option value="1" ${booking.stars == 1 ? 'selected' : ''}>⭐</option>
-                <option value="2" ${booking.stars == 2 ? 'selected' : ''}>⭐⭐</option>
-                <option value="3" ${booking.stars == 3 ? 'selected' : ''}>⭐⭐⭐</option>
-                <option value="4" ${booking.stars == 4 ? 'selected' : ''}>⭐⭐⭐⭐</option>
-                <option value="5" ${booking.stars == 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐</option>
-            </select>
-            </li>
+            <li>Booking #${booking.id} - From: ${booking.datefrom} To: ${booking.dateto} - Info: ${booking.info}</li>
         `;
     }
 }
 getBookings();
-async function rateBooking(id, stars) {
-    const res = await fetch(`${apiUrl}/bookings/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stars: parseInt(stars) })
-    });
-    const resData = await res.json();
-    console.log(resData);
-    getBookings();
-}
 
 async function saveBooking() {
     const booking = {
-        room_id: document.getElementById("room-list").value,
-        guest_id: document.getElementById("guest-list").value,
+        room_id: parseInt(document.getElementById("room-list").value),
+        guest_id: 1,
         datefrom: document.getElementById("datefrom").value,
         dateto: document.getElementById("dateto").value,
         info: document.getElementById("info").value
     };
-
     const res = await fetch(`${apiUrl}/bookings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(booking)
     });
     const resData = await res.json();
@@ -75,4 +43,4 @@ async function saveBooking() {
     getBookings();
 }
 
-document.getElementById('btn-save').addEventListener('click', saveBooking);
+document.getElementById("btn-save").addEventListener("click", saveBooking);
